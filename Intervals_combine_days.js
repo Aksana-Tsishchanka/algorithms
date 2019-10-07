@@ -1,8 +1,10 @@
 const initials = [
     0, 0, 0, 0, 0,
     100, 100, 100, 100, 100,
-    50, 50, 50, 75, 75,
-    75, 0, 0, 100, 100
+    50, 50, 50,
+    75, 75, 75,
+    0, 0,
+    100, 100
 ];
 
 const expectedResult = [{
@@ -37,27 +39,21 @@ function getIntervals(list) {
     if (!list.length) {
         return [];
     }
-    const map = { //startDate: { value, endDate}
-        0: {
-            value: list[0],
-            endDate: 0,
-        }
+    const array = [];
 
-    }
-    let currentDate = 0;
-
-    for (i = 1; i < list.length; i++) {
-        if (map[currentDate].value !== list[i]) {
-            currentDate = map[currentDate].endDate + 1;
-            map[currentDate] = {
-                value: list[i],
-                endDate: currentDate,
-            }
+    for (i = 0; i < list.length; i++) {
+        let element = array[array.length - 1];
+        if (!element || element.workload !== list[i]) {
+            array.push( {
+                startDate: i,
+                workload: list[i],
+                endDate: i,
+            });
         } else {
-            map[currentDate].endDate++;
+            element.endDate = i;
         }
     }
-    return map;
+    return array;
 }
 
 console.log(getIntervals(initials));
